@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>创建表盘</title>
+</head>
+<style>
+	.box{
+		width: 300px;
+		height: 300px;
+		background: #ccc;
+		border:5px solid #eee;
+		box-shadow: 0 0 5px #000;
+		border-radius: 50%;
+		position: fixed;
+		background: radial-gradient(#fff,#ccc);
+		left:40%;right:0;bottom:0;top:30%;
+	}
+</style>
+<body>
+	<div class="box">
+		
+	</div>
+</body>
+<script>
+	window.onload=function(){
+		var box=document.getElementsByClassName('box')[0];
+		creat();
+		// 获取当前时间
+		var time=new Date();
+		var hours=time.getHours();
+		var min=time.getMinutes();
+		var sec=time.getSeconds();
+
+		// 设置时分秒针
+		var h=creatPoin(8,70,"red",hours*30+min*6/12);
+		var m=creatPoin(6,90,"#000",min*6);
+		var s=creatPoin(4,110,"green",sec*6);
+		setInterval(function (){
+			var time = new Date();
+			var hours = time.getHours();
+			var min = time.getMinutes();
+			var sec = time.getSeconds();
+			h.style.transform ="rotate(" +(hours * 30 + min * 6 /12)+"deg)";
+			m.style.transform= "rotate(" + min*6 + "deg)";
+			s.style.transform= "rotate(" + sec*6 + "deg)";
+		},1000);
+		
+		// 首先创建表盘，创建刻度
+		function creat(){
+			var widths,heights;
+			for(var i=0;i<60;i++){
+				if(i%5==0){
+					widths=6;
+					heights=10;
+				}else{
+					widths=4;
+					heights=6;	
+				}
+				var box=document.getElementsByClassName('box')[0];
+				var div=document.createElement("div");
+				div.style.cssText="width:"+widths+"px;height:"+heights+"px;background:red;position:absolute;left:"+(300-widths)/2+"px;top:0;"
+				div.style.transformOrigin="center 150px";//第一个值要小心了，可能会出错
+				div.style.transform="rotate("+i*6+"deg)";
+				box.appendChild(div);
+			}
+			
+		}
+		function creatPoin(w,h,c,a){
+			var divs=document.createElement("div");
+			var lefts=(300-w)/2;
+			var tops=300/2-h;
+			divs.style.cssText="width:"+ w +"px;height:"+ h +"px;background:"+ c +";position:absolute;left:"+lefts+"px;top:"+ tops +"px;"
+			divs.style.transformOrigin="center bottom";
+			divs.style.transform="rotate("+a+"deg)";
+			box.appendChild(divs);
+			return divs;
+		}
+		
+	}
+</script>
+</html>
